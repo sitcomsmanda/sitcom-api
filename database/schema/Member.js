@@ -35,4 +35,9 @@ const memberSchema = new mongoose.Schema({
   },
 });
 
-export default memberSchema;
+memberSchema.pre("save", function (next) {
+  this.updateAt = new Date.now();
+  next();
+});
+
+export default mongoose.model(`Member`, memberSchema);
