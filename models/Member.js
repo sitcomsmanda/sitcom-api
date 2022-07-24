@@ -40,4 +40,4 @@ memberSchema.pre("save", function (next) {
   next();
 });
 
-export default mongoose.model(`Member`, memberSchema);
+export default mongoose.models.Member || mongoose.model("Member", memberSchema);
