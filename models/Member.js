@@ -29,14 +29,14 @@ const memberSchema = new mongoose.Schema({
     ummutable: true,
     default: () => new Date.now(),
   },
-  updateAt: {
+  updatedAt: {
     type: Date,
     default: () => new Date.now(),
   },
 });
 
 memberSchema.pre("save", function (next) {
-  this.updateAt = new Date.now();
+  this.updatedAt = new Date.now();
   next();
 });
 
