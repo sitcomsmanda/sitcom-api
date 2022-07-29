@@ -38,28 +38,32 @@ const handler = async (req, res) => {
       switch (method) {
         case "GET":
           try {
-            const search = query.search.length < 1 ? undefined : query.search;
-
-            const members =
-              search === undefined
-                ? await Member.find({})
-                : await Member.find({
-                    $text: { $search: search },
-                  });
-
-            if (members.length >= 1) {
+            if (query.search) {
+              const search = query.search;
+              const members = await Member.find({
+                $text: { $search: search },
+              });
+              if (members.length >= 1) {
+                res.status(200).json({
+                  success: true,
+                  msg: "found",
+                  data: members,
+                });
+              } else {
+                res.status(200).json({
+                  success: true,
+                  msg: "not found",
+                  data: members,
+                });
+              }
+            } else {
+              const members = await Member.find({});
               res.status(200).json({
                 success: true,
                 msg: "found",
                 data: members,
               });
             }
-
-            res.status(200).json({
-              success: true,
-              msg: "not found",
-              data: members,
-            });
           } catch (error) {
             res
               .status(500)
