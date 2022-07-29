@@ -6,10 +6,24 @@ import Token from "../../models/Token";
  * @swagger
  * /api/member:
  *   get:
- *     description: Returns all the member
- *     responses:
- *       200:
- *         description: array of member object
+ *    description: Returns all the member
+ *    parameters:
+ *      - in: query
+ *        name: token
+ *        schema:
+ *          type: string
+ *          required: true
+ *        description: token to access data
+ *      - in: query
+ *        name: search
+ *        schema:
+ *          type: string
+ *        description: member search query
+ *    responses:
+ *      200:
+ *        description: array of member object
+ *      400:
+ *        description: no token specified
  */
 
 const handler = async (req, res) => {
@@ -43,7 +57,7 @@ const handler = async (req, res) => {
 
             res.status(200).json({
               success: true,
-              msg: "search query not found",
+              msg: "not found",
               data: members,
             });
           } catch (error) {
