@@ -22,7 +22,7 @@ const memberSchema = new mongoose.Schema({
     required: true,
   },
   asalSmp: String,
-  hobi: [String],
+  hobi: String,
   deskripsi: String,
   createdAt: {
     type: Date,
