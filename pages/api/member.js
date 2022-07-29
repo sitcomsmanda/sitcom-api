@@ -24,10 +24,26 @@ const handler = async (req, res) => {
       switch (method) {
         case "GET":
           try {
-            const members = await Member.find();
+            const search = query.search.length < 1 ? undefined : query.search;
+
+            const members =
+              search === undefined
+                ? await Member.find({})
+                : await Member.find({
+                    $text: { $search: search },
+                  });
+
+            if (members.length >= 1) {
+              res.status(200).json({
+                success: true,
+                msg: "found",
+                data: members,
+              });
+            }
+
             res.status(200).json({
               success: true,
-              msg: "found",
+              msg: "search query not found",
               data: members,
             });
           } catch (error) {

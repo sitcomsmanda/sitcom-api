@@ -35,6 +35,8 @@ const memberSchema = new mongoose.Schema({
   },
 });
 
+memberSchema.index({ "$**": "text" });
+
 memberSchema.pre("save", function (next) {
   this.updatedAt = new Date.now();
   next();
