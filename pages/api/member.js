@@ -1,6 +1,27 @@
+import Cors from "cors";
+
 import dbConnect from "../../lib/dbConnect";
 import Member from "../../models/Member";
 import Token from "../../models/Token";
+
+// Initializing the cors middleware
+const cors = Cors({
+  methods: ["GET", "HEAD"],
+});
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+}
 
 /**
  * @swagger
@@ -27,6 +48,9 @@ import Token from "../../models/Token";
  */
 
 const handler = async (req, res) => {
+  // Run the middleware
+  await runMiddleware(req, res, cors);
+
   const { method, query } = req;
   const token = query.token;
 
